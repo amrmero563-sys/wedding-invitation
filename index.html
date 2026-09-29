@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation - Amr & Huda</title>
+    <!-- Google Fonts import for exact match -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0b0b0b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Vertical Card Canvas */
+        .invitation-card {
+            width: 390px;
+            height: 720px;
+            background-color: #faf9f6;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.9);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 20px 35px 20px;
+            text-align: center;
+            color: #222;
+        }
+
+        /* Top & Bottom Floral Frame SVGs */
+        .floral-svg-top {
+            position: absolute;
+            width: 92%;
+            top: 10px;
+            left: 4%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .floral-svg-bottom {
+            position: absolute;
+            width: 92%;
+            bottom: 8px;
+            left: 4%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Music Toggle Button */
+        .music-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #dcd5ca;
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .music-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Floating Animated Flowers Overlay */
+        .flowers-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 4;
+            overflow: hidden;
+        }
+
+        .floating-flower {
+            position: absolute;
+            font-size: 18px;
+            opacity: 0.7;
+            animation: floatDown 6s infinite linear;
+        }
+
+        .flower-1 { left: 10%; animation-duration: 7s; animation-delay: 0s; }
+        .flower-2 { left: 25%; animation-duration: 9s; animation-delay: 2s; }
+        .flower-3 { left: 55%; animation-duration: 6s; animation-delay: 1s; }
+        .flower-4 { left: 80%; animation-duration: 8s; animation-delay: 3s; }
+        .flower-5 { left: 90%; animation-duration: 10s; animation-delay: 0.5s; }
+
+        /* Header Animations - Typewriter Font Match */
+        .header {
+            margin-top: 12px;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeInDown 1.2s ease-out 0.2s forwards;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .rings-icon {
+            font-size: 26px;
+            margin-bottom: 2px;
+            display: block;
+            animation: ringPulse 2s infinite ease-in-out;
+        }
+
+        .title {
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            color: #222;
+            line-height: 1.3;
+            font-weight: 400;
+        }
+
+        /* Photo Area */
+        .illustration-wrap {
+            position: relative;
+            z-index: 2;
+            margin: 2px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            animation: zoomInVideo 1.4s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+        }
+
+        .sparkles-container {
+            position: absolute;
+            width: 280px;
+            height: 200px;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(circle, rgba(212,175,55,0.25) 0%, transparent 75%);
+            animation: sparklePulse 2.5s infinite alternate ease-in-out;
+        }
+
+        .couple-img {
+            width: 260px;
+            max-height: 230px;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Calligraphy Script Names Match */
+        .names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #111;
+            z-index: 2;
+            font-weight: 400;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.2s forwards;
+            margin: -5px 0;
+        }
+
+        /* Date Row Match */
+        .date-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 2px 0;
+            z-index: 2;
+            width: 100%;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.6s forwards;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .day-label, .time-label {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #222;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            padding: 4px 8px;
+            font-weight: 500;
+        }
+
+        .date-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .month-label {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .day-number {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+            margin: 1px 0;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .year-label {
+            font-size: 0.75rem;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        /* Family Phrasing Block */
+        .invitation-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.72rem;
+            color: #333;
+            line-height: 1.4;
+            max-width: 310px;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 1.8s forwards;
+        }
+
+        /* Location Link Styling */
+        .location-info {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            line-height: 1.35;
+            z-index: 2;
+            max-width: 290px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2s forwards;
+            font-weight: 500;
+        }
+
+        .location-link {
+            color: #333;
+            text-decoration: underline;
+            text-decoration-color: rgba(51, 51, 51, 0.4);
+            transition: color 0.2s ease, text-decoration-color 0.2s ease;
+            display: inline-block;
+        }
+
+        .location-link:hover {
+            color: #d4af37;
+            text-decoration-color: #d4af37;
+        }
+
+        /* Countdown Area */
+        .countdown-wrap {
+            z-index: 2;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 2.3s forwards;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .timer-grid {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .timer-box {
+            background: #ffffff;
+            border: 1px solid #dcd5ca;
+            border-radius: 6px;
+            padding: 6px 10px;
+            min-width: 52px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .timer-num {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #111;
+            display: block;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .timer-lbl {
+            font-size: 0.58rem;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Keyframes */
+        @keyframes floatDown {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 0;
+            }
+            20% { opacity: 0.8; }
+            80% { opacity: 0.8; }
+            100% {
+                transform: translateY(740px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomInVideo {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes sparklePulse {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="invitation-card" id="cardContainer">
+    <!-- Music Button -->
+    <button class="music-btn" id="musicBtn" title="Toggle Sound">🎵</button>
+
+    <!-- Animated Floating Flowers Overlay -->
+    <div class="flowers-overlay">
+        <span class="floating-flower flower-1">🌸</span>
+        <span class="floating-flower flower-2">🌺</span>
+        <span class="floating-flower flower-3">🌸</span>
+        <span class="floating-flower flower-4">🌹</span>
+        <span class="floating-flower flower-5">🌸</span>
+    </div>
+
+    <!-- Top Floral Frame SVG -->
+    <svg class="floral-svg-top" viewBox="0 0 300 60" fill="none" stroke="#222" stroke-width="1.2">
+        <path d="M 10,10 Q 150,50 290,10" fill="none"/>
+        <path d="M 30,10 C 60,35 100,35 130,15" fill="none"/>
+        <path d="M 170,15 C 200,35 240,35 270,10" fill="none"/>
+        <circle cx="150" cy="32" r="4" fill="#222"/>
+    </svg>
+
+    <!-- Header -->
+    <div class="header">
+        <span class="rings-icon">💍</span>
+        <div class="title">We Invited You To Our<br>Wedding Party</div>
+    </div>
+
+    <!-- Photo Container -->
+    <div class="illustration-wrap">
+        <div class="sparkles-container"></div>
+        <img src="couple.png" alt="Bride and Groom" class="couple-img">
+    </div>
+
+    <!-- Couple Names -->
+    <div class="names">Amr & Huda</div>
+
+    <!-- Date Layout -->
+    <div class="date-row">
+        <div class="day-label">FRIDAY</div>
+        <div class="date-box">
+            <span class="month-label">OCT</span>
+            <span class="day-number">23</span>
+            <span class="year-label">2026</span>
+        </div>
+        <div class="time-label">8.00 PM</div>
+    </div>
+
+    <!-- Updated Family Text -->
+    <div class="invitation-text">
+        Your presence will be our greatest gift as we celebrate this special day with our beloved family.
+    </div>
+
+    <!-- Location (Linked to Google Maps) -->
+    <div class="location-info">
+        <a href="https://maps.google.com/?q=Fatma+El+Sharbatly+Mosque,+Talaat+Harb+Axis,+New+Cairo+1" target="_blank" rel="noopener noreferrer" class="location-link">
+            📍 Fatma El Sharbatly Mosque<br>
+            Talaat Harb Axis, New Cairo 1
+        </a>
+    </div>
+
+    <!-- Live Countdown -->
+    <div class="countdown-wrap">
+        <div class="timer-grid">
+            <div class="timer-box"><span class="timer-num" id="d">00</span><span class="timer-lbl">Days</span></div>
+            <div class="timer-box"><span class="timer-num" id="h">00</span><span class="timer-lbl">Hrs</span></div>
+            <div class="timer-box"><span class="timer-num" id="m">00</span><span class="timer-lbl">Min</span></div>
+            <div class="timer-box"><span class="timer-num" id="s">00</span><span class="timer-lbl">Sec</span></div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="weddingAudio" loop preload="auto">
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Bottom Floral Frame SVG -->
+    <svg class="floral-svg-bottom" viewBox="0 0 300 60" fill="none" stroke="#222" stroke-width="1.2">
+        <path d="M 10,50 Q 150,10 290,50" fill="none"/>
+        <path d="M 30,50 C 60,25 100,25 130,45" fill="none"/>
+        <path d="M 170,45 C 200,25 240,25 270,50" fill="none"/>
+        <circle cx="150" cy="28" r="4" fill="#222"/>
+    </svg>
+</div>
+
+<script>
+    // Live Countdown Timer
+    const targetDate = new Date("October 23, 2026 20:00:00").getTime();
+
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff > 0) {
+            document.getElementById('d').innerText = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+            document.getElementById('h').innerText = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+            document.getElementById('m').innerText = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+            document.getElementById('s').innerText = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
+        }
+    }, 1000);
+
+    // Audio Control
+    const audio = document.getElementById('weddingAudio');
+    const musicBtn = document.getElementById('musicBtn');
+    let isPlaying = false;
+
+    function playAudio() {
+        if (!isPlaying) {
+            audio.play().then(() => {
+                isPlaying = true;
+                musicBtn.innerText = "🔊";
+            }).catch(() => {
+                isPlaying = false;
+                musicBtn.innerText = "🔇";
+            });
+        }
+    }
+
+    musicBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            musicBtn.innerText = "🔇";
+        } else {
+            playAudio();
+        }
+    });
+
+    const enableAudioOnInteraction = () => {
+        playAudio();
+        window.removeEventListener('click', enableAudioOnInteraction);
+        window.removeEventListener('touchstart', enableAudioOnInteraction);
+    };
+
+    window.addEventListener('click', enableAudioOnInteraction);
+    window.addEventListener('touchstart', enableAudioOnInteraction);
+    window.addEventListener('DOMContentLoaded', playAudio);
+</script>
+
+</body>
+</html>
